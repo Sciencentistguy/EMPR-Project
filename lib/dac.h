@@ -1,4 +1,6 @@
-#include "lpc_types.h"
+#pragma once
+
+#include <lpc_types.h>
 
 #define DAC_PORT 0
 #define DAC_FUNC 2

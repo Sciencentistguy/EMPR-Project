@@ -1,4 +1,4 @@
-#include "lpc17xx_i2c.h"
+#include <lpc17xx_i2c.h>
 
 #include "i2c.h"
 #include "keypad.h"

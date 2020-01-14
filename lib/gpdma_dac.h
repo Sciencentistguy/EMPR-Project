@@ -1,4 +1,6 @@
-#include "lpc17xx_gpdma.h"
+#pragma once
+
+#include <lpc17xx_gpdma.h>
 
 #include "dac.h"
 

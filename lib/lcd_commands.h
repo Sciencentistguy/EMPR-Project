@@ -1,3 +1,5 @@
+#pragma once
+
 // taken from section ten of the PCF2119x driver datasheet
 
 /*

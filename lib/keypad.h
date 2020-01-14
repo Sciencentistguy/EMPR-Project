@@ -1,4 +1,6 @@
-#include "lpc_types.h"
+#pragma once
+
+#include <lpc_types.h>
 
 #define KEYPAD_ADDRESS 0x21
 #define KEYPAD_INT_PIN 23

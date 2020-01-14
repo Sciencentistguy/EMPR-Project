@@ -1,4 +1,6 @@
-#include "lpc_types.h"
+#pragma once
+
+#include <lpc_types.h>
 
 /**
     @brief gens a sinewave for the DAC centered around 1.165V

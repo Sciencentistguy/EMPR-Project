@@ -1,5 +1,7 @@
-#include "lpc17xx_adc.h"
-#include "lpc_types.h"
+#pragma once
+
+#include <lpc17xx_adc.h>
+#include <lpc_types.h>
 
 #define ADC_0_PIN 23
 #define ADC_0_PORT 0
@@ -45,4 +47,4 @@ void adc_start();
 */
 void adc_stop();
 
-void ADC_IRQHandler(void);
+void ADC_IRQHandler();

@@ -1,5 +1,5 @@
-#include "lpc17xx_adc.h"
-#include "lpc17xx_pinsel.h"
+#include <lpc17xx_adc.h>
+#include <lpc17xx_pinsel.h>
 
 #include "adc.h"
 
@@ -44,7 +44,7 @@ void adc_stop() {
     ADC_DeInit(LPC_ADC);
 }
 
-void ADC_IRQHandler(void) {
+void ADC_IRQHandler() {
     if (ADC_ChannelGetStatus(LPC_ADC, ADC_CHANNEL_1, ADC_DATA_DONE)) {
         adc_callback(ADC_ChannelGetData(LPC_ADC, ADC_CHANNEL_1));
     }

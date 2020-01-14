@@ -1,3 +1,5 @@
+#pragma once
+
 /**
     gets the length of an array
 */

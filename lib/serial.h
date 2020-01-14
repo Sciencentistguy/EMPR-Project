@@ -1,7 +1,9 @@
+#pragma once
+
 /**
     @brief initilises the serial port on UART1 (Port 0, Pin2/3)
 */
-void serial_init(void);
+void serial_init();
 
 /**
     @brief reads data from serial port

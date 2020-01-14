@@ -1,4 +1,6 @@
-#include "lpc_types.h"
+#pragma once
+
+#include <lpc_types.h>
 
 #include "lcd_commands.h"
 

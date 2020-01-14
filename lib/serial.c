@@ -1,12 +1,12 @@
-#include "serial.h"
+#include <lpc17xx_pinsel.h>
+#include <lpc17xx_uart.h>
 
 #include <stdarg.h>
 #include <stdio.h>
 
-#include "lpc17xx_pinsel.h"
-#include "lpc17xx_uart.h"
+#include "serial.h"
 
-void serial_init(void) {
+void serial_init() {
     UART_CFG_Type UARTConfigStruct;           // UART Configuration structure variable
     UART_FIFO_CFG_Type UARTFIFOConfigStruct;  // UART FIFO configuration Struct variable
     PINSEL_CFG_Type PinCfg;                   // Pin configuration for UART

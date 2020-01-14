@@ -1,5 +1,6 @@
+#include <lpc17xx_systick.h>
+
 #include "systick_delay.h"
-#include "lpc17xx_systick.h"
 
 volatile uint32_t SysTick_Count = 0;
 volatile uint32_t SysTick_FlagLimit = 0;

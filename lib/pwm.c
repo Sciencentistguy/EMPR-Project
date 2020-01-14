@@ -1,5 +1,5 @@
-#include "lpc17xx_pinsel.h"
-#include "lpc17xx_pwm.h"
+#include <lpc17xx_pinsel.h>
+#include <lpc17xx_pwm.h>
 
 #include "pwm.h"
 

@@ -1,5 +1,5 @@
-#include "lpc17xx_i2c.h"
-#include "lpc_types.h"
+#include <lpc17xx_i2c.h>
+#include <lpc_types.h>
 
 #include <stdarg.h>
 #include <stdio.h>

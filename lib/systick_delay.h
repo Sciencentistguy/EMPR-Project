@@ -1,7 +1,6 @@
-#ifndef SYSTICK_DELAY_H
-#define SYSTICK_DELAY_H
+#pragma once
 
-#include "lpc_types.h"
+#include <lpc_types.h>
 
 /**
     @brief SysTick IRQ handler
@@ -46,5 +45,3 @@ uint8_t systick_flag();
     @param ms how often to fire systick int. Must be less than 168
 */
 void systick_enable(uint8_t ms);
-
-#endif

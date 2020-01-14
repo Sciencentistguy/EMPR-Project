@@ -1,4 +1,6 @@
-#include "lpc_types.h"
+#pragma once
+
+#include <lpc_types.h>
 
 #define PWM_PORT 2
 #define PWM_FUNC 1
