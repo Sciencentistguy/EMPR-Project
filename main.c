@@ -1,18 +1,35 @@
 #include <math.h>
 #include <string.h>
 
+#include <lpc17xx_gpio.h>
+
 #include "libs/i2c.h"
 #include "libs/serial.h"
 #include "libs/pinsel.h"
 #include "libs/systick_delay.h"
 #include "libs/motors.h"
 #include "libs/grid.h"
+#include "libs/keypad.h"
+
+volatile uint8_t keypad_pressed_flag = 0;
+void EINT3_IRQHandler() {
+    if (GPIO_GetIntStatus(KEYPAD_INT_PORT, KEYPAD_INT_PIN, KEYPAD_INT_EDGE)) {
+        GPIO_ClearInt(KEYPAD_INT_PORT, 1 << KEYPAD_INT_PIN);
+        serial_printf("keypad int\r\n");
+        keypad_pressed_flag = 1;
+    }
+}
+
 
 int main() {
     serial_init();
     systick_init();
     i2c_init();
     setup_switches();
+
+    GPIO_IntCmd(0, 1 << 23, 1);
+    NVIC_EnableIRQ(EINT3_IRQn);
+    keypad_set_as_inputs();
 
     serial_printf("hello\r\n");
 
@@ -22,32 +39,37 @@ int main() {
 
     grid_home(&grid);
 
-    systick_delay_blocking(100);
+    keypad_pressed_flag = 0;
+    while (1) {
+        if (keypad_pressed_flag == 0) {
+            continue;
+        }
 
-    uint16_t offset_x = 400;
-    uint16_t offset_y = 400;
-    uint16_t radius = 200;
-
-    while(1) {
-        for (int theta = 0; theta < 360; theta++) {
-            double rad = theta * 3.14/180;
-            int x = offset_x + (radius * sin(rad));
-            int y = offset_y + (radius * cos(rad));
-            grid_move_to_point(&grid, x, y);
-            // serial_printf("x: %3d, y: %3d\r\n", x, y);
+        char k = keypad_read();
+        switch (k)
+        {
+        case '1':
+            grid_x_steps(&grid, 5);
+            break;
+        case '4':
+            grid_x_steps(&grid, -5);
+            break;
+        case '2':
+            grid_y_steps(&grid, 5);
+            break;
+        case '5':
+            grid_y_steps(&grid, -5);
+            break;
+        case '3':
+            movez(5);
+            break;
+        case '6':
+            movez(-5);
+            break;
+        default:
+            break;
         }
     }
-
-    // movex(900);
-
-    // raster
-    // while (grid.y < grid.max_y) {
-    //     grid_move_to_point(&grid, grid.max_x, grid.y);
-    //     systick_delay_blocking(100);
-    //     grid_move_to_point(&grid, 0, grid.y + 5);
-    // }
-
-
 
     return 0;
 }
