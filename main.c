@@ -34,7 +34,7 @@ int main() {
     serial_printf("hello\r\n");
 
     Grid_t grid = {
-        950, 950, 10, 260, 0, 0
+        700, 700, 10, 260, 0, 0
     };
 
     grid_home(&grid);
