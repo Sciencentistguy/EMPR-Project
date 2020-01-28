@@ -19,16 +19,22 @@ int main() {
         950, 950, 10, 260, 0, 0
     };
 
+    
     grid_home(&grid);
-    grid_move_to_point(&grid, 900, 0);
-    systick_delay_blocking(500);
+    int square[3][3] = {{0, 900}, {0, 10} , {0, 900}};
+    for(int i = 0; i < 3; i++){
+        systick_delay_blocking(500);
+        grid_move_to_point(&grid,square[i][0],square[i][1]);
+    }   
+    //grid_move_to_point(&grid, 900, 0);
+    //systick_delay_blocking(500);
 
-    while(1) {
-        grid_move_to_point(&grid, 0, 0);
-        systick_delay_blocking(50);
-        grid_move_to_point(&grid, 900, 900);
-        systick_delay_blocking(50);
-    }
+    //while(1) {
+    //    grid_move_to_point(&grid, 0, 0);
+    //    systick_delay_blocking(50);
+    //    grid_move_to_point(&grid, 900, 900);
+    //    systick_delay_blocking(50);
+    //}
 
     // movex(900);
 
