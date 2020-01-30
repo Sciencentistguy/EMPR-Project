@@ -6,15 +6,14 @@
 #include <lpc17xx_gpio.h>
 
 #include "libs/i2c.h"
-#include "libs/lcd.h"
 #include "libs/keypad.h"
-#include "libs/serial.h"
-#include "libs/pinsel.h"
-#include "libs/systick_delay.h"
-#include "libs/motors.h"
-#include "libs/grid.h"
+#include "libs/lcd.h"
 #include "libs/menu.h"
+#include "libs/motors.h"
+#include "libs/pinsel.h"
 #include "libs/sensor.h"
+#include "libs/serial.h"
+#include "libs/systick_delay.h"
 
 #include "tasks/a-tasks.h"
 #include "tasks/b-tasks.h"
@@ -44,7 +43,6 @@ int main() {
     NVIC_EnableIRQ(EINT3_IRQn);
     keypad_set_as_inputs();
 
-
     serial_printf("hello\r\n");
 
     menu_add_option("A3: man move", 0, a3_manual_move);
@@ -63,19 +61,19 @@ int main() {
         serial_printf("[Menu]: Read '%c'\r\n", k);
 
         switch (k) {
-        case 'A':
-            menu_draw(menu_index - 1);
-            break;
+            case 'A':
+                menu_draw(menu_index - 1);
+                break;
 
-        case 'B':
-            menu_draw(menu_index + 1);
-            break;
+            case 'B':
+                menu_draw(menu_index + 1);
+                break;
 
-        case '#':
-            menu_run_callback(menu_index);
+            case '#':
+                menu_run_callback(menu_index);
 
-        default:
-            break;
+            default:
+                break;
         }
 
         keypad_set_as_inputs();
