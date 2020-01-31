@@ -45,4 +45,5 @@ void send_move(Motor_t *motor, uint8_t direction);
 int move(Motor_t *motor, int steps);
 int movex(int steps);
 int movey(int steps);
+int movez(int steps);
 void movexy_together(int xsteps, int ysteps);
