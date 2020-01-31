@@ -1,55 +1,87 @@
+#include <lpc17xx_gpio.h>
+
 #include <math.h>
 #include <string.h>
 
+#include <lpc17xx_gpio.h>
+
 #include "libs/i2c.h"
-#include "libs/serial.h"
-#include "libs/pinsel.h"
-#include "libs/systick_delay.h"
+#include "libs/keypad.h"
+#include "libs/lcd.h"
+#include "libs/menu.h"
 #include "libs/motors.h"
-#include "libs/grid.h"
+#include "libs/pinsel.h"
+#include "libs/sensor.h"
+#include "libs/serial.h"
+#include "libs/systick_delay.h"
+
+#include "tasks/a-tasks.h"
+#include "tasks/b-tasks.h"
+
+volatile uint8_t keypad_pressed_flag = 0;
+volatile uint32_t adc_val;
+volatile uint8_t read = 0;
+
+void EINT3_IRQHandler() {
+    if (GPIO_GetIntStatus(KEYPAD_INT_PORT, KEYPAD_INT_PIN, KEYPAD_INT_EDGE)) {
+        GPIO_ClearInt(KEYPAD_INT_PORT, 1 << KEYPAD_INT_PIN);
+        // serial_printf("keypad int\r\n");
+        keypad_set_flag();
+    }
+}
 
 int main() {
+    extern int8_t menu_index;
     serial_init();
-    systick_init();
     i2c_init();
-    setup_switches();
+    lcd_init();
+    menu_init();
+    systick_init();
+    sensor_enable();
 
-    serial_printf("hello\r\n");
+    GPIO_IntCmd(0, 1 << 23, 1);
+    NVIC_EnableIRQ(EINT3_IRQn);
+    keypad_set_as_inputs();
 
-    Grid_t grid = {
-        700, 700, 10, 260, 0, 0
-    };
+    serial_printf("\r\nhello\r\n");
 
+    menu_add_option("A1a: Circle", 0, task_A1a);
+    menu_add_option("A1b: Square", 1, task_A1b);
+    menu_add_option("A2:  edge detec", 2, a2_edge_detection);
+    menu_add_option("A3:  man move", 3, a3_manual_move);
+    menu_add_option("B1:  CRGB move", 4, b1_xyz_move_rgb);
 
-    grid_home(&grid);
-    grid_move_to_point(&grid, 700, 700);
+    menu_draw(0);
 
-    systick_delay_blocking(100);
-
-    uint16_t offset_x = 400;
-    uint16_t offset_y = 400;
-    uint16_t radius = 200;
-
-    while(1) {
-        for (int theta = 0; theta < 360; theta++) {
-            double rad = theta * 3.14/180;
-            int x = offset_x + (radius * sin(rad));
-            int y = offset_y + (radius * cos(rad));
-            grid_move_to_point(&grid, x, y);
-            // serial_printf("x: %3d, y: %3d\r\n", x, y);
+    keypad_reset_flag();
+    systick_delay_flag_init(5);
+    while (1) {
+        if (keypad_flag() == 0 || systick_flag() == 0) {
+            continue;
         }
+
+        char k = keypad_read();
+        serial_printf("[Menu]: Read '%c'\r\n", k);
+
+        switch (k) {
+            case 'A':
+                menu_draw(menu_index - 1);
+                break;
+
+            case 'B':
+                menu_draw(menu_index + 1);
+                break;
+
+            case '#':
+                serial_printf("[Menu]: Called menu item %i\r\n", menu_index);
+                menu_run_callback(menu_index);
+
+            default:
+                break;
+        }
+
+        keypad_set_as_inputs();
+        systick_delay_flag_reset();
+        keypad_reset_flag();
     }
-
-    // movex(900);
-
-    // raster
-    // while (grid.y < grid.max_y) {
-    //     grid_move_to_point(&grid, grid.max_x, grid.y);
-    //     systick_delay_blocking(100);
-    //     grid_move_to_point(&grid, 0, grid.y + 5);
-    // }
-
-
-
-    return 0;
 }
