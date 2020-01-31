@@ -91,6 +91,7 @@ int main() {
             break;
         }
         char co_send[15];
+        lcd_clear_display();
         sprintf(co_send,"%i,%i,%i,co_x,co_y,co_z);
         lcd_send_string(co_send,0x00);
                 
