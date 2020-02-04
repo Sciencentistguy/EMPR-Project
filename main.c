@@ -5,6 +5,7 @@
 
 #include <lpc17xx_gpio.h>
 
+#include "libs/grid.h"
 #include "libs/i2c.h"
 #include "libs/keypad.h"
 #include "libs/lcd.h"
@@ -14,7 +15,6 @@
 #include "libs/sensor.h"
 #include "libs/serial.h"
 #include "libs/systick_delay.h"
-#include "libs/grid.h"
 
 #include "tasks/a-tasks.h"
 #include "tasks/b-tasks.h"
@@ -31,7 +31,6 @@ void EINT3_IRQHandler() {
     }
 }
 
-
 int main() {
     extern int8_t menu_index;
     serial_init();
@@ -40,10 +39,13 @@ int main() {
     menu_init();
     systick_init();
     sensor_enable();
+    motor_init();
     GPIO_IntCmd(0, 1 << 23, 1);
     NVIC_EnableIRQ(EINT3_IRQn);
     keypad_set_as_inputs();
+
     serial_printf("\r\nhello\r\n");
+
     menu_add_option("Grid Home", 0, grid_home);
     menu_add_option("A1a: Circle", 1, task_A1a_circle);
     menu_add_option("A1b: Square", 2, task_A1b_square);
