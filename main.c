@@ -43,6 +43,8 @@ int main() {
 
     serial_printf("\r\nhello\r\n");
 
+    task_A2_edge_detection();
+
     menu_add_option("Grid Home", 0, grid_home);
     menu_add_option("A1a: Circle", 1, task_A1a_circle);
     menu_add_option("A1b: Square", 2, task_A1b_square);
