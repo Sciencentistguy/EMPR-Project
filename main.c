@@ -3,19 +3,16 @@
 #include <math.h>
 #include <string.h>
 
-#include <lpc17xx_gpio.h>
-
-#include "libs/grid.h"
 #include "libs/i2c.h"
 #include "libs/keypad.h"
 #include "libs/lcd.h"
 #include "libs/menu.h"
-#include "libs/motors.h"
 #include "libs/pinsel.h"
-#include "libs/sensor.h"
+#include "libs/scanner/grid.h"
+#include "libs/scanner/motors.h"
+#include "libs/scanner/sensor.h"
 #include "libs/serial.h"
 #include "libs/systick_delay.h"
-
 #include "tasks/a-tasks.h"
 #include "tasks/b-tasks.h"
 
