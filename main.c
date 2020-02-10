@@ -43,8 +43,6 @@ int main() {
 
     serial_printf("\r\nhello\r\n");
 
-    task_B2_raster_scan();
-
     menu_add_option("Grid Home", 0, grid_home);
     menu_add_option("A1a: Circle", 1, task_A1a_circle);
     menu_add_option("A1b: Square", 2, task_A1b_square);
@@ -53,6 +51,7 @@ int main() {
     menu_add_option("A3:  man move", 5, task_A3_manual_move);
     menu_add_option("B1:  CRGB move", 6, task_B1_rgb_man_move);
     menu_add_option("B2:  Raster", 7, task_B2_raster_scan);
+    menu_add_option("B3:  Search", 7, task_B3_color_search);
     menu_draw(0);
     keypad_reset_flag();
     systick_delay_flag_init(5);
