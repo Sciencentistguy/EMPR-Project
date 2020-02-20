@@ -15,7 +15,7 @@
 #include "libs/systick_delay.h"
 #include "tasks/a-tasks.h"
 #include "tasks/b-tasks.h"
-#include "tasks/d-tasks.h"
+#include "tasks/c-tasks.h"
 
 volatile uint8_t keypad_pressed_flag = 0;
 volatile uint32_t adc_val;
@@ -47,6 +47,7 @@ int main() {
 
     // grid_calibrate();
     // flag_edge_detect();
+    flag_scan();
 
     menu_add_option("Grid Home", 0, grid_home);
     menu_add_option("A1a: Circle", 1, task_A1a_circle);
