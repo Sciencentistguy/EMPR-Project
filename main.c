@@ -52,32 +52,6 @@ void pc_control_mode() {
     menu_run_callback(item);
 }
 
-void pc_coordinate_colour() {
-    lcd_clear_display();
-    char buf[32];
-    while (strcmp(buf, "hello") != 0) {
-        memset(buf, 0, sizeof(buf));
-        serial_read_blocking(buf, 5);
-    }
-    char bufs[8][8];
-    memset(bufs, 0, sizeof(bufs));
-
-    serial_read_blocking(bufs[0], 4);
-    serial_read_blocking(bufs[1], 4);
-    serial_read_blocking(bufs[2], 4);
-
-    char coords[3];
-    coords[0] = atoi(bufs[0]);
-    lcd_printf(0, "%s - %i", bufs[0], coords[0]);
-    for (;;)
-        ;
-    coords[1] = atoi(bufs[1]);
-    coords[2] = atoi(bufs[2]);
-    lcd_printf(0x0, "%i - %i - %i", coords[0], coords[1], coords[2]);
-    for (;;)
-        ;
-}
-
 int main() {
     extern int8_t menu_index;
     serial_init();
@@ -103,7 +77,7 @@ int main() {
     menu_add_option("B1:  CRGB move", 6, task_B1_rgb_man_move);
     menu_add_option("B2:  Raster", 7, task_B2_raster_scan);
     menu_add_option("B3:  Search", 8, task_B3_color_search);
-    menu_add_option("D2:  PC coord", 9, pc_coordinate_colour);
+    menu_add_option("D2:  PC coord", 9, task_D2_pc_coodrinate_colour);
     menu_draw(0);
     keypad_reset_flag();
     systick_delay_flag_init(5);
