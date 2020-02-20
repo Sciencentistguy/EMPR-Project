@@ -30,28 +30,6 @@ void EINT3_IRQHandler() {
     }
 }
 
-void pc_control_mode() {
-    lcd_clear_display();
-    char buf[32];
-    while (strcmp(buf, "hello") != 0) {
-        memset(buf, 0, sizeof(buf));
-        serial_read_blocking(buf, 5);
-    }
-
-    serial_printf("[Menu]: Sending menu items\r\n");
-    menu_print_items();
-
-    memset(buf, 0, sizeof(buf));
-    serial_read_blocking(buf, 11);
-    lcd_printf(0x0, "%s", buf);
-    char dest[4];
-    memset(dest, 0, sizeof(dest));
-    strcpy(dest, buf + 8);
-    int item = atoi(dest);
-    lcd_clear_display();
-    menu_run_callback(item);
-}
-
 int main() {
     extern int8_t menu_index;
     serial_init();
@@ -78,38 +56,9 @@ int main() {
     menu_add_option("B2:  Raster", 7, task_B2_raster_scan);
     menu_add_option("B3:  Search", 8, task_B3_color_search);
     menu_add_option("D2:  PC coord", 9, task_D2_pc_coodrinate_colour);
-    menu_draw(0);
+
     keypad_reset_flag();
     systick_delay_flag_init(5);
 
-    while (1) {
-        if (keypad_flag() == 0 || systick_flag() == 0) {
-            continue;
-        }
-
-        char k = keypad_read();
-        serial_printf("[Menu]: Read '%c'\r\n", k);
-
-        switch (k) {
-            case 'A':
-                menu_draw(menu_index - 1);
-                break;
-
-            case 'B':
-                menu_draw(menu_index + 1);
-                break;
-
-            case '#':
-                serial_printf("[Menu]: Called menu item %i\r\n", menu_index);
-                menu_run_callback(menu_index);
-                menu_draw(0);
-
-            default:
-                break;
-        }
-
-        keypad_set_as_inputs();
-        systick_delay_flag_reset();
-        keypad_reset_flag();
-    }
+    menu_loop();
 }
