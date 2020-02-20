@@ -1,6 +1,8 @@
 #include <lpc_types.h>
 
 #include <math.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "../libs/keypad.h"
 #include "../libs/lcd.h"
@@ -78,4 +80,27 @@ void flag_edge_detect() {
         grid_move_to_point(0, grid.max_y);
         _move_print_rgb(grid.max_x, 0, 5, int_time);
     }
+}
+
+void task_D2_pc_coodrinate_colour() {
+    lcd_clear_display();
+    char buf[32];
+    while (strcmp(buf, "hello") != 0) {
+        memset(buf, 0, sizeof(buf));
+        serial_read_blocking(buf, 5);
+    }
+    char bufs[8][8];
+    memset(bufs, 0, sizeof(bufs));
+
+    serial_read_blocking(bufs[0], 4);
+    serial_read_blocking(bufs[1], 4);
+    serial_read_blocking(bufs[2], 4);
+
+    char coords[3];
+    coords[0] = atoi(bufs[0]);
+    lcd_printf(0, "%s - %i", bufs[0], coords[0]);
+    coords[1] = atoi(bufs[1]);
+    coords[2] = atoi(bufs[2]);
+    lcd_printf(0x0, "%i - %i - %i", coords[0], coords[1], coords[2]);
+    // TODO - go to coordinates, read rgb, send that to python.
 }
