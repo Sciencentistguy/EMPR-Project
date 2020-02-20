@@ -1,6 +1,7 @@
 #include <lpc17xx_gpio.h>
 
 #include <math.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "libs/i2c.h"
@@ -29,6 +30,54 @@ void EINT3_IRQHandler() {
     }
 }
 
+void pc_control_mode() {
+    lcd_clear_display();
+    char buf[32];
+    while (strcmp(buf, "hello") != 0) {
+        memset(buf, 0, sizeof(buf));
+        serial_read_blocking(buf, 5);
+    }
+
+    serial_printf("[Menu]: Sending menu items\r\n");
+    menu_print_items();
+
+    memset(buf, 0, sizeof(buf));
+    serial_read_blocking(buf, 11);
+    lcd_printf(0x0, "%s", buf);
+    char dest[4];
+    memset(dest, 0, sizeof(dest));
+    strcpy(dest, buf + 8);
+    int item = atoi(dest);
+    lcd_clear_display();
+    menu_run_callback(item);
+}
+
+void pc_coordinate_colour() {
+    lcd_clear_display();
+    char buf[32];
+    while (strcmp(buf, "hello") != 0) {
+        memset(buf, 0, sizeof(buf));
+        serial_read_blocking(buf, 5);
+    }
+    char bufs[8][8];
+    memset(bufs, 0, sizeof(bufs));
+
+    serial_read_blocking(bufs[0], 4);
+    serial_read_blocking(bufs[1], 4);
+    serial_read_blocking(bufs[2], 4);
+
+    char coords[3];
+    coords[0] = atoi(bufs[0]);
+    lcd_printf(0, "%s - %i", bufs[0], coords[0]);
+    for (;;)
+        ;
+    coords[1] = atoi(bufs[1]);
+    coords[2] = atoi(bufs[2]);
+    lcd_printf(0x0, "%i - %i - %i", coords[0], coords[1], coords[2]);
+    for (;;)
+        ;
+}
+
 int main() {
     extern int8_t menu_index;
     serial_init();
@@ -45,10 +94,7 @@ int main() {
 
     serial_printf("\r\nhello\r\n");
 
-    // grid_calibrate();
-    // flag_edge_detect();
-
-    menu_add_option("Grid Home", 0, grid_home);
+    menu_add_option("PC control mode", 0, pc_control_mode);
     menu_add_option("A1a: Circle", 1, task_A1a_circle);
     menu_add_option("A1b: Square", 2, task_A1b_square);
     menu_add_option("A1c: Z axis", 3, task_A1c_z_axis);
