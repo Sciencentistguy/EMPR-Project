@@ -14,13 +14,23 @@ typedef struct menu_item {
 void menu_init();
 
 /**
+ * @breif Print all menu items to serial
+ */
+void menu_print_items();
+
+/**
+ * @breif Communicates with menu.py to allow the PC to control the MBED
+ */
+void pc_control_mode();
+
+/**
     @breif add an option to the menu
 
     @param the name of the option to display on the lcd
     @param the index of the option
     @param the callback function pointer
 */
-void menu_add_option(char* name, int8_t index, void(*func)());
+void menu_add_option(char* name, int8_t index, void (*func)());
 
 /**
     @breif run the callback of the given menu item
@@ -35,3 +45,8 @@ void menu_run_callback(int8_t index);
     @param the index of item to draw at the top
 */
 void menu_draw(int8_t index);
+
+/**
+ * @breif Runs the menu loop
+ */
+void menu_loop();

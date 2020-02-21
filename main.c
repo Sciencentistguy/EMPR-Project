@@ -1,6 +1,7 @@
 #include <lpc17xx_gpio.h>
 
 #include <math.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "libs/i2c.h"
@@ -16,6 +17,7 @@
 #include "tasks/a-tasks.h"
 #include "tasks/b-tasks.h"
 #include "tasks/c-tasks.h"
+#include "tasks/d-tasks.h"
 
 volatile uint8_t keypad_pressed_flag = 0;
 volatile uint32_t adc_val;
@@ -30,7 +32,6 @@ void EINT3_IRQHandler() {
 }
 
 int main() {
-    extern int8_t menu_index;
     serial_init();
     i2c_init();
     lcd_init();
@@ -50,7 +51,7 @@ int main() {
     // flag_scan();
     flag_detect();
 
-    menu_add_option("Grid Home", 0, grid_home);
+    menu_add_option("PC control mode", 0, pc_control_mode);
     menu_add_option("A1a: Circle", 1, task_A1a_circle);
     menu_add_option("A1b: Square", 2, task_A1b_square);
     menu_add_option("A1c: Z axis", 3, task_A1c_z_axis);
@@ -59,38 +60,12 @@ int main() {
     menu_add_option("B1:  CRGB move", 6, task_B1_rgb_man_move);
     menu_add_option("B2:  Raster", 7, task_B2_raster_scan);
     menu_add_option("B3:  Search", 8, task_B3_color_search);
-    menu_draw(0);
+    menu_add_option("D2:  PC coord", 9, task_D2_pc_coodrinate_colour);
+
     keypad_reset_flag();
     systick_delay_flag_init(5);
 
-    while (1) {
-        if (keypad_flag() == 0 || systick_flag() == 0) {
-            continue;
-        }
+    menu_loop();
 
-        char k = keypad_read();
-        serial_printf("[Menu]: Read '%c'\r\n", k);
-
-        switch (k) {
-            case 'A':
-                menu_draw(menu_index - 1);
-                break;
-
-            case 'B':
-                menu_draw(menu_index + 1);
-                break;
-
-            case '#':
-                serial_printf("[Menu]: Called menu item %i\r\n", menu_index);
-                menu_run_callback(menu_index);
-                menu_draw(0);
-
-            default:
-                break;
-        }
-
-        keypad_set_as_inputs();
-        systick_delay_flag_reset();
-        keypad_reset_flag();
-    }
+    return 0;
 }
