@@ -94,13 +94,19 @@ void task_D2_pc_coodrinate_colour() {
 
     serial_read_blocking(bufs[0], 4);
     serial_read_blocking(bufs[1], 4);
-    serial_read_blocking(bufs[2], 4);
 
-    char coords[3];
+    int coords[2];
     coords[0] = atoi(bufs[0]);
-    lcd_printf(0, "%s - %i", bufs[0], coords[0]);
     coords[1] = atoi(bufs[1]);
-    coords[2] = atoi(bufs[2]);
-    lcd_printf(0x0, "%i - %i - %i", coords[0], coords[1], coords[2]);
+    lcd_printf(0x0, "%i - %i", coords[0], coords[1]);
+    grid_home();
+    grid_move_to_point(coords[0], coords[1]);
+    uint16_t rgb[3];
+    memset(rgb, 0, sizeof(rgb));
+    sensor_read_rgb(rgb, rgb + 1, rgb + 2);
+    serial_printf("[Task D2]: Sending rgb values\r\n");
+    serial_printf("%i|%i|%i\r\n", rgb[0], rgb[1], rgb[2]);
+    for (;;)
+        ;
     // TODO - go to coordinates, read rgb, send that to python.
 }
