@@ -47,7 +47,8 @@ int main() {
 
     // grid_calibrate();
     // flag_edge_detect();
-    flag_scan();
+    // flag_scan();
+    flag_detect();
 
     menu_add_option("Grid Home", 0, grid_home);
     menu_add_option("A1a: Circle", 1, task_A1a_circle);
