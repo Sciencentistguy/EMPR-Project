@@ -4,14 +4,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../libs/keypad.h"
-#include "../libs/lcd.h"
-#include "../libs/scanner/grid.h"
-#include "../libs/scanner/motors.h"
-#include "../libs/scanner/sensor.h"
-#include "../libs/serial.h"
-#include "../libs/systick_delay.h"
-#include "../libs/timer.h"
+#include "libs/keypad.h"
+#include "libs/lcd.h"
+#include "libs/scanner/grid.h"
+#include "libs/scanner/motors.h"
+#include "libs/scanner/sensor.h"
+#include "libs/serial.h"
+#include "libs/systick_delay.h"
+#include "libs/timer.h"
 
 void task_D2_pc_coodrinate_colour() {
     lcd_clear_display();

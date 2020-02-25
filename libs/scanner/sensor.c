@@ -2,9 +2,9 @@
 
 #include <lpc_types.h>
 
-#include "../i2c.h"
-#include "../serial.h"
-#include "../systick_delay.h"
+#include "libs/i2c.h"
+#include "libs/serial.h"
+#include "libs/systick_delay.h"
 
 #include "sensor_commands.h"
 
@@ -109,4 +109,9 @@ uint16_t sensor_read_16bit(uint8_t address) {
 
 uint16_t sensor_read_clear() {
     return sensor_read_16bit(SENSOR_CDATA);
+}
+
+uint8_t sensor_ready() {
+    uint8_t status = sensor_read_register(SENSOR_STATUS_ADDRESS);
+    return status & SENSOR_STATUS_AVALID;
 }
