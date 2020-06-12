@@ -1,4 +1,5 @@
 # EMPR
 ---
+This is the code for my group's EMPR project, a scanner based on a 3D printer.
 
-* astyle command: `astyle --mode=c -A2 -F -xg -H -U -xe -k1 -W1 -xb -xf -xh -c -xp -p -C -S -N` 
+It runs on an lp1768, and requires the CMSIS libraries to compile.
